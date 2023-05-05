@@ -2,21 +2,25 @@ import os
 from substrateinterface import SubstrateInterface, Keypair
 from substrateinterface.exceptions import SubstrateRequestException
 
+WALLET1 = os.getenv("WALLET1")
+WALLET2 = os.getenv("WALLET2")
+PASSPHRASE = os.getenv("PASSPHRASE")
+
 substrate = SubstrateInterface(
-    url="wss://westend-rpc.polkadot.io",
-    ss58_format=42,
-    type_registry_preset='westend'
+    url="wss://mandala-rpc.aca-staging.network/ws",
+    ss58_format=42
 )
 
-SEED = os.environ["SEED"]
+with open(f"{WALLET1}.json", 'r') as fp:
+    json_data = fp.read()
+    keypair = Keypair.create_from_encrypted_json(json_data, passphrase=PASSPHRASE, ss58_format=42)
 
-keypair = Keypair.create_from_uri(SEED)
 
 call = substrate.compose_call(
     call_module='Balances',
     call_function='transfer',
     call_params={
-        'dest': '5D2fBKHgezt6pKKuXFo8Xse3sT9hZK5PtkJEyacozZJnVXZ3',
+        'dest': '5DnwSBic6fGC7nrxm514cXZ4tWKeqEpFBRK915LJeaGyWXWz',
         'value': 0.1 * 10 ** 12
     }
 )
