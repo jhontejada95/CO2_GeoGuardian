@@ -1,3 +1,4 @@
+#include "env.h"
 #include <WiFi.h>
 #include <Wire.h>
 #include <WiFiClient.h>
@@ -76,13 +77,6 @@ static const uint8_t logo_polkadot[512] = {
   0x00, 0x00, 0x00, 0x3f, 0xc0, 0x00, 0x00, 0x00, 
   };
 
-
-const char* ssid = "Milo";
-const char* password = "97274340";
-String wallet = "5D2fBKHgezt6pKKuXFo8Xse3sT9hZK5PtkJEyacozZJnVXZ3";
-String token = "0ce956fc-131b-42d6-a4b1-8e8319e45f84";
-String serverName = "http://ec2-54-234-110-184.compute-1.amazonaws.com:8086/data_co/";
-String source = "Sensor";
 const int sensorPin = 36;
 int sensorValue = 0;
 
