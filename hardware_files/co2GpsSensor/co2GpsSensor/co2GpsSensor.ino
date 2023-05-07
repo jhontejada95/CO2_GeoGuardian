@@ -77,6 +77,7 @@ static const uint8_t logo_polkadot[512] = {
   0x00, 0x00, 0x00, 0x3f, 0xc0, 0x00, 0x00, 0x00, 
   };
 
+String serverName = "http://ec2-54-234-110-184.compute-1.amazonaws.com:8086/data_co/";
 const int sensorPin = 36;
 int sensorValue = 0;
 
@@ -118,31 +119,41 @@ void loop() {
   display.clearDisplay();
   display.drawBitmap(64, 0, logo_polkadot, 60, 64, 1);
 
-  sensorValue = analogRead(sensorPin) * 0.7;
+  sensorValue = analogRead(sensorPin) * 0.5;
   Serial.println(sensorValue);
   
-  // Tamaño del texto
-  display.setTextSize(2);
-  // Color del texto
+  display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-  // Posición del texto
-  display.setCursor(10, 4);
-  // Escribir texto
+  display.setCursor(5, 4);
   display.println("ppm:");
-    // Posición del texto
-  display.setCursor(10, 26);
-  // Escribir texto
+  display.setTextSize(2);
+  // data CO2 sensor
+  display.setCursor(5, 16);
   display.println(sensorValue);
+  // run
+  display.setTextSize(1);
+  display.setCursor(2, 36);
+  display.println(" -> -> ->");
+  // data lat, lon gps sensor  
+  display.setCursor(5, 46);
+  display.println("Lat,  Lon");
+  display.setCursor(5, 56);
+  display.println("00.00");
+  display.setCursor(40, 56);
+  display.println("00.00");
+  
 
   if (int(sensorValue) > 820){
-      display.setCursor(2, 48);
-      // Escribir texto
+      display.setTextSize(1);
+      display.setCursor(80, 28);
       display.println("send!");
+      display.setCursor(2, 36);
+      display.println(" <- <- <-");
   }
     
   if (WiFi.status() == WL_CONNECTED) { 
 
-  HTTPClient http;  
+  HTTPClient http;
   String serverPath = serverName + "?co2=" + sensorValue + "&origin=" + source + "&wallet_send=" + wallet + "&token=" + token; 
 
   http.begin(wifiClient, serverPath);                         
@@ -160,7 +171,7 @@ void loop() {
   
   }      
   
-  delay(15000);
+  delay(3000);
     
  
   // Enviar a pantalla
