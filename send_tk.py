@@ -3,7 +3,6 @@ from substrateinterface import SubstrateInterface, Keypair
 from substrateinterface.exceptions import SubstrateRequestException
 
 WALLET1 = os.getenv("WALLET1")
-WALLET2 = os.getenv("WALLET2")
 PASSPHRASE = os.getenv("PASSPHRASE")
 
 

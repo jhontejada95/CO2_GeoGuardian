@@ -1,5 +1,5 @@
 import os
-import pyodbc
+import pymysql
 import uvicorn
 import pandas as pd
 from send_tk import sendTk
@@ -23,6 +23,8 @@ USERNAME = os.environ["USERNAME"]
 PASSWORD = os.environ["PASSWORD"]
 DRIVER = os.environ["DRIVER"]
 TOKEN = os.environ["TOKEN"]
+WALLET1 = os.environ["WALLET1"]
+WALLET2 = os.environ["WALLET2"]
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -34,8 +36,8 @@ async def home(request: Request):
     """
 
     bal_obj = getBalance()
-    w_1, _ = bal_obj.fit(wallet='5GcDVqDQZ5n2qhUmFSP4stJvqXppcmevVW8dVWrXFQUJKXHD')
-    w_2, ln = bal_obj.fit(wallet='5D2fBKHgezt6pKKuXFo8Xse3sT9hZK5PtkJEyacozZJnVXZ3')
+    w_1, _ = bal_obj.fit(wallet=WALLET1)
+    w_2, ln = bal_obj.fit(wallet=WALLET2)
 
     plotSensor().plot(wallet_1=w_1, wallet_2=w_2)
     print(f'Plot OK!')
@@ -83,14 +85,16 @@ async def send(wallet_send: str, token: str):
     return tx
 
 
-@app.get('/data_co/')
-async def data_co(co2: int, origin: str, wallet_send: str, token: str):
+@app.get('/data_co_send_tokens/')
+async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: str, lat: float, lon: float):
     """
     this function send data to database and send token if co2 value up 800 ppm
     :param co2: int, value of ppm co2
     :param origin: str, is origin of data test or sensor
     :param wallet_send: str, wallet to send tokens
     :param token: uuid for endpoint
+    :param lat: float, latitude from sensor
+    :param lon: float, longitude from sensor
     :return: None
     """
 
@@ -106,11 +110,14 @@ async def data_co(co2: int, origin: str, wallet_send: str, token: str):
             print(f'👌 data send sensor ok and co2 ok')
 
         # insert data in db
-        with pyodbc.connect(
-                'DRIVER=' + DRIVER + ';SERVER=tcp:' + SERVER + ';PORT=1433;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD) as conn:
+        with pymysql.connect(host=SERVER,
+                             port=3306,
+                             user=USERNAME,
+                             passwd=PASSWORD,
+                             database=DATABASE) as conn:
             with conn.cursor() as cursor:
                 count = cursor.execute(
-                    f"INSERT INTO polkadothack.dbo.registro_co2 (CO2, DATE_C, ORIGIN) VALUES ({co2}, DEFAULT, '{origin}');").rowcount
+                    f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
                 conn.commit()
                 print(f'Rows inserted: {str(count)}')
 
@@ -120,27 +127,32 @@ async def data_co(co2: int, origin: str, wallet_send: str, token: str):
         print(f'Not valid token {token}')
 
 
-@app.get('/data_co_bici/')
-async def data_co(co2: int, origin: str, token: str):
+@app.get('/data_co_send/')
+async def data_co_send(co2: int, origin: str, token: str, lat: float, lon: float):
     """
     this function send data to database and send token if co2 value up 800 ppm
     :param co2: int, value of ppm co2
     :param origin: str, is origin of data test or sensor
+    :param lat: float, latitude from sensor
+    :param lon: float, longitude from sensor
     :param token: uuid for endpoint
     :return: None
     """
 
     print(''.center(60, '='))
-    print(f'ppm co2: {co2} , origen: {origin}')
+    print(f"ppm co2: {co2} , origen: {origin}, lat: {lat}, lon: {lon}")
 
     if token == TOKEN:
 
         # insert data in db
-        with pyodbc.connect(
-                'DRIVER=' + DRIVER + ';SERVER=tcp:' + SERVER + ';PORT=1433;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD) as conn:
+        with pymysql.connect(host=SERVER,
+                             port=3306,
+                             user=USERNAME,
+                             passwd=PASSWORD,
+                             database=DATABASE) as conn:
             with conn.cursor() as cursor:
                 count = cursor.execute(
-                    f"INSERT INTO polkadothack.dbo.co2_bici (CO2, DATE_C, ORIGIN) VALUES ({co2}, DEFAULT, '{origin}');").rowcount
+                    f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
                 conn.commit()
                 print(f'Rows inserted: {str(count)}')
 
@@ -150,8 +162,8 @@ async def data_co(co2: int, origin: str, token: str):
         print(f'Not valid token {token}')
 
 
-@app.get('/query_co2_bici/')
-async def query_co2_bici(rows: int, token: str):
+@app.get('/query_co2/')
+async def query_co2(rows: int, token: str):
     """
     this function test database
     :param rows: number of rows to query
@@ -163,7 +175,7 @@ async def query_co2_bici(rows: int, token: str):
         with pyodbc.connect(
                 'DRIVER=' + DRIVER + ';SERVER=tcp:' + SERVER + ';PORT=1433;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD) as conn:
             sql_query = f'SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY DATE_C DESC) AS row FROM polkadothack.dbo.co2_bici ) AS alias WHERE row > 0 AND row <= {rows}'
-            df  = pd.read_sql(sql_query, conn)
+            df = pd.read_sql(sql_query, conn)
 
             json_output = df.to_dict()
 
