@@ -141,3 +141,4 @@ templates/plots/new_plot.html
 /5DnwSBic6fGC7nrxm514cXZ4tWKeqEpFBRK915LJeaGyWXWz.json
 /hardware_files/co2GpsSensor/co2GpsSensor/env.h
 ps.sh
+.env.sh
