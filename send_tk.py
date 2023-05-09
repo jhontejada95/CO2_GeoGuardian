@@ -34,7 +34,7 @@ class sendTk:
         """
         this function send tokens to blockchain wallet
         :param wallet_to_send: a wallet to send tokens
-        :param amount: amount in WND
+        :param amount: amount in ACA
         :return: transfer: is True if transaction OK, else False
         """
 
