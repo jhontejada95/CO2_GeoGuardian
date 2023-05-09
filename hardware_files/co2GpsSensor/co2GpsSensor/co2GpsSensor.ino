@@ -1,12 +1,18 @@
 #include "env.h"
 #include <WiFi.h>
 #include <Wire.h>
+#include <TinyGPS++.h>
 #include <WiFiClient.h>
 #include <HTTPClient.h>
 #include <Adafruit_SSD1306.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
+#define RXD2 3
+#define TXD2 1
+
+HardwareSerial neogps(1);
+TinyGPSPlus gps;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
@@ -86,16 +92,12 @@ WiFiClient wifiClient;
 void setup() {
   
   Serial.begin(115200);
+  neogps.begin(9600, SERIAL_8N1, RXD2, TXD2);
+
   WiFi.begin(ssid, password);
   delay(500);
 
-  Wire.begin(5, 4);
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C, false, false)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
-  } 
-
-    // Conexión wifi
+  // Conexión wifi
   while (WiFi.status() != WL_CONNECTED) {
  
     delay(1000);
@@ -115,7 +117,19 @@ void setup() {
 
 
 void loop() {
-  
+
+  boolean newData = false;
+  for (unsigned long start = millis(); millis() - start < 1000;)
+  {
+    while (neogps.available())
+    {
+      if (gps.encode(neogps.read()))
+      {
+        newData = true;
+      }
+    }
+  }
+    
   display.clearDisplay();
   display.drawBitmap(64, 0, logo_polkadot, 60, 64, 1);
 
@@ -134,14 +148,23 @@ void loop() {
   display.setTextSize(1);
   display.setCursor(2, 36);
   display.println(" -> -> ->");
-  // data lat, lon gps sensor  
-  display.setCursor(5, 46);
-  display.println("Lat,  Lon");
-  display.setCursor(5, 56);
-  display.println("00.00");
-  display.setCursor(40, 56);
-  display.println("00.00");
+  // data lat, lon gps sensor
+  if (gps.location.isValid() == 1){  
+    display.setCursor(5, 46);
+    display.println("Lat,  Lon");
+    display.setCursor(5, 56);
+    display.println(gps.location.lat());
+    display.setCursor(40, 56);
+    display.println(gps.location.lng());
+  } else {
+    display.setCursor(5, 46);
+    display.println("Lat,  Lon");
+    display.setCursor(5, 56);
+    display.println("..");
+    display.setCursor(40, 56);
+    display.println("..");   
   
+  }  
 
   if (int(sensorValue) > 820){
       display.setTextSize(1);
@@ -171,10 +194,20 @@ void loop() {
   
   }      
   
-  delay(3000);
-    
+  delay(3000);   
  
   // Enviar a pantalla
   display.display();
   delay(1000);
+
+    if(newData == true)
+  {   
+    Serial.println("No Data");
+    newData = false;
+    Serial.println(gps.satellites.value());
+  }
+  if(newData == false)
+  {
+    Serial.println("No Data");
+  }  
 }
