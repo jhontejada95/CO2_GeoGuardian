@@ -10,9 +10,9 @@ class getBalance:
 
         try:
             self.substrate = SubstrateInterface(
-                url="wss://westend-rpc.polkadot.io",
-                ss58_format=42,
-                type_registry_preset='westend')
+                url="wss://mandala-rpc.aca-staging.network/ws",
+                ss58_format=42
+                )
 
             print("😀 node running")
             self.l_n = self.substrate.get_chain_head()

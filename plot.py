@@ -1,5 +1,5 @@
 import os
-import pyodbc
+import pymysql
 import datetime
 import pandas as pd
 import plotly.graph_objects as go
@@ -20,17 +20,20 @@ class plotSensor:
         this class request database co2 info
         """
 
-        with pyodbc.connect(
-                'DRIVER=' + DRIVER + ';SERVER=tcp:' + SERVER + ';PORT=1433;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD) as conn:
-            sql_query = f'SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY DATE_C DESC) AS row FROM polkadothack.dbo.registro_co2 ) AS alias WHERE row > 0 AND row <= 300'
-            DF = pd.read_sql(sql_query, conn)
+        with pymysql.connect(host=SERVER,
+                             port=3306,
+                             user=USERNAME,
+                             passwd=PASSWORD,
+                             database=DATABASE) as conn:
+            sql_query = f'SELECT * FROM sys.co2Storage'
+            df = pd.read_sql(sql_query, conn)
 
-        DF['DATE_C'] = pd.to_datetime(DF['DATE_C'])
-        end = max(DF['DATE_C'])
+        df['date_c'] = pd.to_datetime(df['date_c'])
+        end = max(df['date_c'])
         init = end - datetime.timedelta(hours=1)
         print(init)
 
-        self.DF = DF[DF['DATE_C'] > init]
+        self.DF = df[df['date_c'] > init]
 
     def plot(self, wallet_1, wallet_2):
         DF = self.DF
@@ -40,9 +43,9 @@ class plotSensor:
 
         fig = make_subplots(1, 2)
 
-        fig.add_trace(go.Scatter(x=DF['DATE_C'],
-                                 y=DF['CO2'][DF['ORIGIN'] == 'Sensor'],
-                                 name='CO2 (Sensor)',
+        fig.add_trace(go.Scatter(x=DF['date_c'],
+                                 y=DF['co2'][DF['origin'] == 'Sensor'],
+                                 name='co2 (Sensor)',
                                  mode='lines',
                                  line_color='rgb(230,0,122)'), 1, 1)
 
@@ -57,7 +60,7 @@ class plotSensor:
                              marker_color='rgb(230,0,122)'), 1, 2)
 
         template = 'plotly_white'
-        fig.update_layout(template=template, title="PPM CO2 and WALLET STATUS LAST HOUR")
+        fig.update_layout(template=template, title="PPM co2 and WALLET STATUS LAST HOUR")
         # fig.show()
 
         # convert it to JSON

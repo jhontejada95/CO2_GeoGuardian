@@ -2,7 +2,8 @@ import os
 from substrateinterface import SubstrateInterface, Keypair
 from substrateinterface.exceptions import SubstrateRequestException
 
-SEED = os.environ["SEED"]
+WALLET1 = os.getenv("WALLET1")
+PASSPHRASE = os.getenv("PASSPHRASE")
 
 
 class sendTk:
@@ -17,10 +18,9 @@ class sendTk:
 
         try:
             self.substrate = SubstrateInterface(
-                url="wss://westend-rpc.polkadot.io",
-                ss58_format=42,
-                type_registry_preset='westend'
-            )
+                url="wss://mandala-rpc.aca-staging.network/ws",
+                ss58_format=42
+                )
 
             print("😀 last node running")
 
@@ -38,7 +38,9 @@ class sendTk:
         :return: transfer: is True if transaction OK, else False
         """
 
-        keypair = Keypair.create_from_uri(SEED)
+        with open(f"{WALLET1}.json", 'r') as fp:
+            json_data = fp.read()
+        keypair = Keypair.create_from_encrypted_json(json_data, passphrase=PASSPHRASE, ss58_format=42)
 
         call = self.substrate.compose_call(
             call_module='Balances',
