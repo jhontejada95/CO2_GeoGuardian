@@ -1,8 +1,4 @@
-#include <WiFi.h>
-#include <Wire.h>
 #include <TinyGPS++.h>
-#include <WiFiClient.h>
-#include <HTTPClient.h>
 #include <SoftwareSerial.h>
 
 // Choose two Arduino pins to use for software serial
