@@ -38,13 +38,15 @@ class plotSensor:
     def plot(self, wallet_1, wallet_2):
         DF = self.DF
 
+        print(DF)
+
         balance_w = [wallet_1, wallet_2]
         names = ['grant', 'stake']
 
         fig = make_subplots(1, 2)
 
         fig.add_trace(go.Scatter(x=DF['date_c'],
-                                 y=DF['co2'][DF['origin'] == 'Sensor'],
+                                 y=DF['co2'][DF['origin'] == 'test'],
                                  name='co2 (Sensor)',
                                  mode='lines',
                                  line_color='rgb(230,0,122)'), 1, 1)
@@ -74,5 +76,5 @@ class plotSensor:
             f.write(template.format(fig_json))
 
 
-#if __name__ == '__main__':
-#    plotSensor().plot(12, 5)
+if __name__ == '__main__':
+    plotSensor().plot(12, 5)
