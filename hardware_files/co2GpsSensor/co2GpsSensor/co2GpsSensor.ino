@@ -78,10 +78,11 @@ void loop()
     Serial.println("No GPS detected");
     while(true);
   }
+
 }
 
 void displayInfo() {
-
+  
   sensorValue = analogRead(sensorPin);
   Serial.print("CO2: ");
   Serial.println(sensorValue);
@@ -127,13 +128,14 @@ void displayInfo() {
     Serial.println("Not Available");
   }
 
-  if (gps.location.isValid()) {    
+  if (gps.location.isValid()) {  
+    
    if (WiFi.status() == WL_CONNECTED) { 
     HTTPClient http;
     String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor03" + "&wallet_send=" + wallet + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
     http.begin(wifiClient, url_get);
-    int httpCode = http.GET();  // Realizar petición 
-    delay(6000);         
+    delay(30000); 
+    int httpCode = http.GET();  // Realizar petición        
     if (httpCode > 0) {      
       Serial.println("Send data OK: True");
     } 
