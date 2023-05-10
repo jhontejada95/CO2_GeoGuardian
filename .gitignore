@@ -142,3 +142,4 @@ templates/plots/new_plot.html
 /hardware_files/co2GpsSensor/co2GpsSensor/env.h
 ps.sh
 .env.sh
+.vscode
