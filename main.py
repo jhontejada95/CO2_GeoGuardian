@@ -87,12 +87,11 @@ async def send(wallet_send: str, token: str):
 
 
 @app.get('/data_co_send_tokens/')
-async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: str, lat: float, lon: float):
+async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon: float):
     """
     this function send data to database and send token if co2 value up 800 ppm
     :param co2: int, value of ppm co2
     :param origin: str, is origin of data test or sensor
-    :param wallet_send: str, wallet to send tokens
     :param token: uuid for endpoint
     :param lat: float, latitude from sensor
     :param lon: float, longitude from sensor
@@ -124,8 +123,8 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
 
         if data_points == 9:
             amount = 0.01
-            tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
-            print(f'🤑 send {amount} to {wallet_send} is: {tx}')
+            tx = sendTk().send(wallet_to_send=WALLET2, amount=amount)
+            print(f'🤑 send {amount} to {WALLET2} is: {tx}')
             print(f'👌 data send sensor ok and co2 ok')
 
             data_points = {"user": "sensor03",

@@ -132,9 +132,8 @@ void displayInfo() {
     
    if (WiFi.status() == WL_CONNECTED) { 
     HTTPClient http;
-    String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor03" + "&wallet_send=" + wallet + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
+    String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor03" + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
     http.begin(wifiClient, url_get);
-    delay(30000); 
     int httpCode = http.GET();  // Realizar petición        
     if (httpCode > 0) {      
       Serial.println("Send data OK: True");
@@ -142,7 +141,8 @@ void displayInfo() {
     
     Serial.println("EndPoint: ");
     Serial.print(url_get);
-    http.end();   
+    delay(60000); 
+    http.end();       
    }   
   } else {
     
@@ -151,7 +151,7 @@ void displayInfo() {
   }
   Serial.println();
   Serial.println();
-  delay(5000);
+  delay(30000);
 }
 
 void handle_OnConnect() {
