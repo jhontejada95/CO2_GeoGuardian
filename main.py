@@ -99,15 +99,13 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
     """
 
     print(''.center(60, '='))
-    print(f'ppm co2: {co2} , origen: {origin}')
+    print(f"ppm co2: {co2} , origen: {origin}, lat: {lat}, lon: {lon}")
 
     if token == TOKEN:
-        if co2 > 820:
-            amount = 0.1
-            tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
-            print(f'🤑 send {amount} to {wallet_send} is: {tx}')
-        else:
-            print(f'👌 data send sensor ok and co2 ok')
+        amount = 0.01
+        tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
+        print(f'🤑 send {amount} to {wallet_send} is: {tx}')
+        print(f'👌 data send sensor ok and co2 ok')
 
         # insert data in db
         with pymysql.connect(host=SERVER,
