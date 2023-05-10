@@ -111,23 +111,25 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
     print(f"ppm co2: {co2} , origen: {origin}, lat: {lat}, lon: {lon}")
 
     if token == TOKEN:
+
+
+        # insert data in db
+        with pymysql.connect(host=SERVER,
+                            port=3306,
+                            user=USERNAME,
+                            passwd=PASSWORD,
+                            database=DATABASE) as conn:
+            with conn.cursor() as cursor:
+                count = cursor.execute(
+                    f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
+                conn.commit()
+                print(f'Rows inserted: {str(count)}')
+
         if data_points > 10:
             amount = 0.01
             tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
             print(f'🤑 send {amount} to {wallet_send} is: {tx}')
             print(f'👌 data send sensor ok and co2 ok')
-
-            # insert data in db
-            with pymysql.connect(host=SERVER,
-                                port=3306,
-                                user=USERNAME,
-                                passwd=PASSWORD,
-                                database=DATABASE) as conn:
-                with conn.cursor() as cursor:
-                    count = cursor.execute(
-                        f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
-                    conn.commit()
-                    print(f'Rows inserted: {str(count)}')
 
             data_points = {"user": "sensor03",
                            "data": 0}
