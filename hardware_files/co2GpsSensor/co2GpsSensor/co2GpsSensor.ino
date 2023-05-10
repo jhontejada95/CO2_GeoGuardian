@@ -133,7 +133,7 @@ void displayInfo() {
     String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor03" + "&wallet_send=" + wallet + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
     http.begin(wifiClient, url_get);
     int httpCode = http.GET();  // Realizar petición 
-    delay(2000);         
+    delay(6000);         
     if (httpCode > 0) {      
       Serial.println("Send data OK: True");
     } 

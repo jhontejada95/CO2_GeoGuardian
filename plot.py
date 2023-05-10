@@ -38,8 +38,6 @@ class plotSensor:
     def plot(self, wallet_1, wallet_2):
         DF = self.DF
 
-        print(DF)
-
         balance_w = [wallet_1, wallet_2]
         names = ['grant', 'stake']
 
@@ -50,11 +48,6 @@ class plotSensor:
                                  name='co2 (Sensor)',
                                  mode='lines',
                                  line_color='rgb(230,0,122)'), 1, 1)
-
-        fig.add_hline(y=820,
-                      line_width=2,
-                      line_dash="dash",
-                      line_color="gray")
 
         fig.add_trace(go.Bar(name='Grant',
                              x=names,

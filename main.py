@@ -145,7 +145,7 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
             with open('data_user.json', "w") as outfile:
                 outfile.write(json_object)
 
-            print("Whit 10 points send 0.01 ACA")
+            print("🔥 Whit 10 points send 0.01 ACA")
 
         print(''.center(60, '='))
 
