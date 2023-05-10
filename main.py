@@ -105,14 +105,11 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
     data_points = int(data_user.get("data"))
 
     print(data_user)
-    print(data_points)
 
     print(''.center(60, '='))
     print(f"ppm co2: {co2} , origen: {origin}, lat: {lat}, lon: {lon}")
 
     if token == TOKEN:
-
-
         # insert data in db
         with pymysql.connect(host=SERVER,
                             port=3306,
@@ -125,7 +122,7 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
                 conn.commit()
                 print(f'Rows inserted: {str(count)}')
 
-        if data_points > 10:
+        if data_points == 9:
             amount = 0.01
             tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
             print(f'🤑 send {amount} to {wallet_send} is: {tx}')
