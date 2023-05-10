@@ -1,20 +1,23 @@
 #include "env.h"
 #include <TinyGPS++.h>
-#include <SoftwareSerial.h>
+#include <WiFiClient.h>
 #include <ESP8266WiFi.h>
+#include <SoftwareSerial.h>
+#include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
 
-// Choose two Arduino pins to use for software serial
+// ESP8266 RX and TX pins to use for software serial
 int RXPin = 13;
 int TXPin = 15;
-
 int GPSBaud = 9600;
 
-//
-String serverName = "http://ec2-54-234-110-184.compute-1.amazonaws.com:8086/data_co/";
+// End point
+String serverName = "http://ec2-184-72-114-228.compute-1.amazonaws.com:8086/data_co_send/";
 
-// Create a TinyGPS++ object
+// Create a TinyGPS++ object and WiFi client
 TinyGPSPlus gps;
+WiFiClient wifiClient;
+ESP8266WebServer server(80);
 
 // Create a software serial port called "gpsSerial"
 SoftwareSerial gpsSerial(RXPin, TXPin);
@@ -23,10 +26,13 @@ SoftwareSerial gpsSerial(RXPin, TXPin);
 const int sensorPin = A0;
 int sensorValue = 0;
 
+String s_lat;
+String s_lon;
+
 void setup()
 {
   // Start the Arduino hardware serial port at 9600 baud
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   WiFi.begin(ssid, password);
   delay(500);
@@ -47,9 +53,15 @@ void setup()
   Serial.println(WiFi.localIP());
   Serial.println("======================================"); 
 
+  server.on("/", handle_OnConnect);
+  server.onNotFound(handle_NotFound);
+
+  server.begin();
+  Serial.println("HTTP server started");
 
   // Start the software serial port at the GPS's default baud
   gpsSerial.begin(GPSBaud);
+  
 }
 
 void loop()
@@ -70,15 +82,17 @@ void loop()
 
 void displayInfo() {
 
-  sensorValue = analogRead(sensorPin) * 0.5;
+  sensorValue = analogRead(sensorPin);
   Serial.print("CO2: ");
   Serial.println(sensorValue);
   
   if (gps.location.isValid()) {
     Serial.print("Latitude: ");
-    Serial.println(gps.location.lat(), 6);
+    s_lat = String(gps.location.lat(), 7);
+    Serial.println(s_lat);
     Serial.print("Longitude: ");
-    Serial.println(gps.location.lng(), 6);
+    s_lon = String(gps.location.lng(), 7);
+    Serial.println(s_lon);
     Serial.print("Altitude: ");
     Serial.println(gps.altitude.meters());
   } else {
@@ -113,40 +127,37 @@ void displayInfo() {
     Serial.println("Not Available");
   }
 
-  if ((WiFi.status() == WL_CONNECTED)) {
-
-    WiFiClient client;
+  if (gps.location.isValid()) {    
+   if (WiFi.status() == WL_CONNECTED) { 
     HTTPClient http;
-
-    Serial.print("[HTTP] begin...\n");
-    // configure traged server and url
-    http.begin(client, "http://" + serverName + "/postplain/"); //HTTP
-    http.addHeader("Content-Type", "application/json");
-
-    Serial.print("[HTTP] POST...\n");
-    // start connection and send HTTP header and body
-    int httpCode = http.POST("{\"hello\":\"world\"}");
-
-    // httpCode will be negative on error
-    if (httpCode > 0) {
-      // HTTP header has been send and Server response header has been handled
-      Serial.printf("[HTTP] POST... code: %d\n", httpCode);
-
-      // file found at server
-      if (httpCode == HTTP_CODE_OK) {
-        const String& payload = http.getString();
-        Serial.println("received payload:\n<<");
-        Serial.println(payload);
-        Serial.println(">>");
-      }
-    } else {
-      Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
-    }
-
-    http.end();
-  }  
-
+    String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor02" + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
+    http.begin(wifiClient, url_get);
+    int httpCode = http.GET();  // Realizar petición          
+    if (httpCode > 0) {      
+      Serial.println("Send data OK: True");
+    } 
+    
+    Serial.println("EndPoint: ");
+    Serial.print(url_get);
+    http.end();   
+   }   
+  } else {
+    
+    Serial.println("Send data OK: False");
+    
+  }
   Serial.println();
   Serial.println();
-  delay(3000);
+  delay(5000);
+}
+
+void handle_OnConnect() {
+
+  server.send(200, "text/plain", "OK");
+}
+
+void handle_NotFound() {
+  
+  server.send(404, "text/plain", "Not found");
+  
 }
