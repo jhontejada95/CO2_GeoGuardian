@@ -1,4 +1,5 @@
 import os
+import json
 import pymysql
 import uvicorn
 import pandas as pd
@@ -97,27 +98,55 @@ async def data_co_send_tokens(co2: int, origin: str, wallet_send: str, token: st
     :param lon: float, longitude from sensor
     :return: None
     """
+    
+    with open('data_user.json') as f:
+        data_user = json.load(f)
+    
+    data_points = int(data_user.get("data"))
+
+    print(data_user)
+    print(data_points)
 
     print(''.center(60, '='))
     print(f"ppm co2: {co2} , origen: {origin}, lat: {lat}, lon: {lon}")
 
     if token == TOKEN:
-        amount = 0.01
-        tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
-        print(f'🤑 send {amount} to {wallet_send} is: {tx}')
-        print(f'👌 data send sensor ok and co2 ok')
+        if data_points > 10:
+            amount = 0.01
+            tx = sendTk().send(wallet_to_send=wallet_send, amount=amount)
+            print(f'🤑 send {amount} to {wallet_send} is: {tx}')
+            print(f'👌 data send sensor ok and co2 ok')
 
-        # insert data in db
-        with pymysql.connect(host=SERVER,
-                             port=3306,
-                             user=USERNAME,
-                             passwd=PASSWORD,
-                             database=DATABASE) as conn:
-            with conn.cursor() as cursor:
-                count = cursor.execute(
-                    f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
-                conn.commit()
-                print(f'Rows inserted: {str(count)}')
+            # insert data in db
+            with pymysql.connect(host=SERVER,
+                                port=3306,
+                                user=USERNAME,
+                                passwd=PASSWORD,
+                                database=DATABASE) as conn:
+                with conn.cursor() as cursor:
+                    count = cursor.execute(
+                        f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
+                    conn.commit()
+                    print(f'Rows inserted: {str(count)}')
+
+            data_points = {"user": "sensor03",
+                           "data": 0}
+            
+            json_object = json.dumps(data_points, indent=4)
+
+            with open('data_user.json', "w") as outfile:
+                outfile.write(json_object)
+
+        else:
+            data_points = {"user": "sensor03",
+                           "data": f"{int(data_points + 1)}"}
+            
+            json_object = json.dumps(data_points, indent=4)
+
+            with open('data_user.json', "w") as outfile:
+                outfile.write(json_object)
+
+            print("Whit 10 points send 0.01 ACA")
 
         print(''.center(60, '='))
 

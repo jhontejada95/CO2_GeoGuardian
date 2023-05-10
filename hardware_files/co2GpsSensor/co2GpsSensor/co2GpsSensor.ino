@@ -12,7 +12,7 @@ int TXPin = 15;
 int GPSBaud = 9600;
 
 // End point
-String serverName = "http://ec2-184-72-114-228.compute-1.amazonaws.com:8086/data_co_send/";
+String serverName = "http://ec2-184-72-114-228.compute-1.amazonaws.com:8086/data_co_send_tokens/";
 
 // Create a TinyGPS++ object and WiFi client
 TinyGPSPlus gps;
@@ -130,9 +130,10 @@ void displayInfo() {
   if (gps.location.isValid()) {    
    if (WiFi.status() == WL_CONNECTED) { 
     HTTPClient http;
-    String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor02" + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
+    String url_get = serverName + "?co2=" + sensorValue + "&origin=sensor03" + "&wallet_send=" + wallet + "&token=" + token + "&lat=" + s_lat + "&lon=" + s_lon;    
     http.begin(wifiClient, url_get);
-    int httpCode = http.GET();  // Realizar petición          
+    int httpCode = http.GET();  // Realizar petición 
+    delay(2000);         
     if (httpCode > 0) {      
       Serial.println("Send data OK: True");
     } 
