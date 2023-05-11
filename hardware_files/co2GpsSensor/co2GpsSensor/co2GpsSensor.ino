@@ -141,8 +141,8 @@ void displayInfo() {
     
     Serial.println("EndPoint: ");
     Serial.print(url_get);
-    delay(60000); 
-    http.end();       
+    http.end();
+    delay(50000);       
    }   
   } else {
     

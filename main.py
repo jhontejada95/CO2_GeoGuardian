@@ -122,7 +122,7 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
                 print(f'Rows inserted: {str(count)}')
 
         if data_points == 9:
-            amount = 0.2
+            amount = 0.5
             tx = sendTk().send(wallet_to_send=WALLET2, amount=amount)
             if tx:
                 print(f'🤑 send {amount} to {WALLET2} is: {tx}')
