@@ -201,9 +201,12 @@ async def query_co2(rows: int, token: str):
     """
     if token == TOKEN:
 
-        with pyodbc.connect(
-                'DRIVER=' + DRIVER + ';SERVER=tcp:' + SERVER + ';PORT=1433;DATABASE=' + DATABASE + ';UID=' + USERNAME + ';PWD=' + PASSWORD) as conn:
-            sql_query = f'SELECT * FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY DATE_C DESC) AS row FROM polkadothack.dbo.co2_bici ) AS alias WHERE row > 0 AND row <= {rows}'
+        with pymysql.connect(host=SERVER,
+                            port=3306,
+                            user=USERNAME,
+                            passwd=PASSWORD,
+                            database=DATABASE) as conn:
+            sql_query = f'SELECT * FROM sys.co2Storage ORDER BY date_c DESC LIMIT {rows}'
             df = pd.read_sql(sql_query, conn)
 
             json_output = df.to_dict()
