@@ -124,8 +124,12 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
         if data_points == 9:
             amount = 0.01
             tx = sendTk().send(wallet_to_send=WALLET2, amount=amount)
-            print(f'🤑 send {amount} to {WALLET2} is: {tx}')
-            print(f'👌 data send sensor ok and co2 ok')
+            if tx:
+                print(f'🤑 send {amount} to {WALLET2} is: {tx}')
+                print(f'👌 data send sensor ok and co2 ok')
+            else:
+                print(f"😭 Transaction denied by network or insufficient gas")
+
 
             data_points = {"user": "sensor03",
                            "data": 0}
