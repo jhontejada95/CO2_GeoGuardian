@@ -38,8 +38,8 @@ class plotSensor:
     def plot(self, wallet_1, wallet_2):
         DF = self.DF
 
-        balance_w = [wallet_1, wallet_2]
-        names = ['grant', 'stake']
+        balance_w = [wallet_2, wallet_1]
+        names = ['stake', 'grant']
 
         fig = make_subplots(1, 2)
 
@@ -50,9 +50,10 @@ class plotSensor:
                                  line_color='rgb(230,0,122)'), 1, 1)
 
         fig.add_trace(go.Bar(name='Grant',
-                             x=names,
-                             y=balance_w,
+                             x=balance_w,
+                             y=names,
                              text=balance_w,
+                             orientation='h',
                              textposition='auto',
                              marker_color='rgb(230,0,122)'), 1, 2)
 
@@ -63,7 +64,7 @@ class plotSensor:
                           margin=dict(l=10, r=10, t=25, b=10),
                           title="PPM co2 and WALLET STATUS LAST HOUR")
         # fig.show()
-
+        fig.update_layout(showlegend=False)
         # convert it to JSON
         fig_json = fig.to_json()
 
