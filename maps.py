@@ -28,6 +28,7 @@ class plotGps:
                                 z='co2',
                                 radius=20,
                                 zoom=14,
+                                height=320,
                                 color_continuous_scale=["#e6007a", "#cf006d", "#b80061", "#a10055", "#8a0049",
                                                         "#73003d", "#5c0030", "#450024", "#2e0018", "#17000c",
                                                         "#000000"],

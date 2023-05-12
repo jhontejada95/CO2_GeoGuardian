@@ -57,7 +57,11 @@ class plotSensor:
                              marker_color='rgb(230,0,122)'), 1, 2)
 
         template = 'plotly_white'
-        fig.update_layout(template=template, title="PPM co2 and WALLET STATUS LAST HOUR")
+        fig.update_layout(template=template,
+                          autosize=True,
+                          height=340,
+                          margin=dict(l=10, r=10, t=25, b=10),
+                          title="PPM co2 and WALLET STATUS LAST HOUR")
         # fig.show()
 
         # convert it to JSON
