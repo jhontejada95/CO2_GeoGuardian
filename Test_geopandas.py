@@ -11,4 +11,5 @@ world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
 col = world[world.name == "Colombia"]
 # Plots
 col.plot()
+plt.savefig("img/map.jpg")
 plt.show()
