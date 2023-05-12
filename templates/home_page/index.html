@@ -63,22 +63,23 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" >
 	    <br>
-            <h4 class="h4">Dashboard</h4>
+        <h4 class="h4">Dashboard</h4>
 
-              <div class="mb-3 border rounded" style='padding: 4px;'>
-                <div id='divPlotly'>
-                  <script>
-                    {{plot | safe}}
-                    Plotly.react('divPlotly', plotly_data.data, plotly_data.layout);
-                  </script>
-                </div>
-              </div>
+          <div class="mb-3 border rounded" style='padding: 16px;'>
+            <div id='divPlotly'>
+              <script>
+                {{plot | safe}}
+                Plotly.react('divPlotly', plotly_data.data, plotly_data.layout);
+              </script>
+            </div>
+          </div>
 
           <div class="mb-3 border rounded" style='padding: 10px;'>
             <div class="container text-start" style='padding: 10px;'>
               <div class="row">
-                <h4 class="h4">¿Cómo funciona?</h4>
+                
                 <div class="col" style='padding: 4px;'>
+                  <h4 class="h4">¿Cómo funciona?</h4>
                   <p class="text-start">
                     La solución consiste en crear un dispositivo IoT que mide concentración de CO2 (monoxido de carbono) y este dispositivo se conecta a la red la blockchain,
                     vez que se supere el valor objetivo de menos de 820 ppm (partes por millón) se descontará de la cuenta de grand a la cuenta de stake, la idea es que los implicados
@@ -90,7 +91,13 @@
                   </p>
                 </div>
                 <div class="col" style='padding: 0px;'>
-                  <img src="{{ url_for('img', path='/map.jpg') }}" class="rounded mx-auto d-block" alt="sensor">
+                  <h4 class="h4">Georeferenciación</h4>
+                  <div id='divPlotly2'>
+                    <script>
+                      {{plot2 | safe}}
+                      Plotly.react('divPlotly2', plotly_data2.data, plotly_data2.layout);
+                    </script>
+                  </div>
                 </div>
               </div>
             </div>

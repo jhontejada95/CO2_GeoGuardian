@@ -52,6 +52,8 @@ class plotSensor:
         fig.add_trace(go.Bar(name='Grant',
                              x=names,
                              y=balance_w,
+                             text=balance_w,
+                             textposition='auto',
                              marker_color='rgb(230,0,122)'), 1, 2)
 
         template = 'plotly_white'

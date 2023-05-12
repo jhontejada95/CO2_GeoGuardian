@@ -6,6 +6,7 @@ import pandas as pd
 from send_tk import sendTk
 from get_balance import getBalance
 from plot import plotSensor
+from maps import plotGps
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI, Request
@@ -43,11 +44,18 @@ async def home(request: Request):
     plotSensor().plot(wallet_1=w_1, wallet_2=w_2)
     print(f'Plot OK!')
 
+    plotGps().plot()
+    print(f'Map OK!')
+
     with open('templates/plots/new_plot.txt', 'r', encoding='utf-8') as file:
         plot = file.readlines()
+    with open('templates/plots/map.txt', 'r', encoding='utf-8') as file2:
+        plot2 = file2.readlines()
+
     return templates.TemplateResponse("home_page/index.html", {
         "request": request,
         "plot": str(plot[0]),
+        "plot2": str(plot2[0]),
         'ln': ln
     })
 
@@ -97,10 +105,10 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
     :param lon: float, longitude from sensor
     :return: None
     """
-    
+
     with open('data_user.json') as f:
         data_user = json.load(f)
-    
+
     data_points = int(data_user.get("data"))
 
     print(data_user)
@@ -111,10 +119,10 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
     if token == TOKEN:
         # insert data in db
         with pymysql.connect(host=SERVER,
-                            port=3306,
-                            user=USERNAME,
-                            passwd=PASSWORD,
-                            database=DATABASE) as conn:
+                             port=3306,
+                             user=USERNAME,
+                             passwd=PASSWORD,
+                             database=DATABASE) as conn:
             with conn.cursor() as cursor:
                 count = cursor.execute(
                     f"INSERT INTO sys.co2Storage (co2, origin, date_c, lat, lon) VALUES ({co2}, '{origin}', CURRENT_TIMESTAMP, {lat}, {lon});")
@@ -130,10 +138,9 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
             else:
                 print(f"😭 Transaction denied by network or insufficient gas")
 
-
             data_points = {"user": "sensor03",
                            "data": 0}
-            
+
             json_object = json.dumps(data_points, indent=4)
 
             with open('data_user.json', "w") as outfile:
@@ -142,7 +149,7 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
         else:
             data_points = {"user": "sensor03",
                            "data": f"{int(data_points + 1)}"}
-            
+
             json_object = json.dumps(data_points, indent=4)
 
             with open('data_user.json', "w") as outfile:
@@ -202,10 +209,10 @@ async def query_co2(rows: int, token: str):
     if token == TOKEN:
 
         with pymysql.connect(host=SERVER,
-                            port=3306,
-                            user=USERNAME,
-                            passwd=PASSWORD,
-                            database=DATABASE) as conn:
+                             port=3306,
+                             user=USERNAME,
+                             passwd=PASSWORD,
+                             database=DATABASE) as conn:
             sql_query = f'SELECT * FROM sys.co2Storage ORDER BY date_c DESC LIMIT {rows}'
             df = pd.read_sql(sql_query, conn)
 
