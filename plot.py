@@ -39,7 +39,7 @@ class plotSensor:
         DF = self.DF
 
         balance_w = [wallet_2, wallet_1]
-        names = ['stake', 'grant']
+        names = ['reward', 'pool reward']
 
         fig = make_subplots(1, 2)
 
