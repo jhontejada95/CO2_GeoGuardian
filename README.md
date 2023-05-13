@@ -4,22 +4,23 @@ En este repositorio está todo el código para la participación en la hackaton 
 ![](/home/oscar/GitHub/polkadot_hackathon/img/logo_hack.png)
 
 ## How does it work?
-The solution is to create an IoT device that measures the concentration of CO2 (carbon monoxide) this device is connected to the blockchain network, once the target value of less than 820 ppm (parts per million) is exceeded, it will be deducted from the grand account to stake account, the idea is that those involved have an incentive to improve their carbon footprint and the information that may have value for those interested in measuring their environmental impact. This device in the future may be on bicycles and cars to include geolocation and create carbon monoxide concentration maps.
+GeoGuardian is a blockchain-based project that uses an IoT device to measure the concentration of carbon monoxide (CO2) and track CO2 emissions in different locations. The solution works in four key steps:
+IoT device: GeoGuardian uses an IoT device to measure the concentration of CO2. This device can be installed in various locations, such as homes, offices, cars, bicycles, and other places.
+Connection to the blockchain network: Once the IoT device is installed, it is connected to the blockchain network to perform transactions. The blockchain network is a decentralized and secure database that records all transactions made.
+Measurement and tracking of CO2 emissions: The IoT device measures the concentration of CO2 and tracks CO2 emissions in different locations. The collected data is used to create a map of CO2 concentration around the world, which helps raise awareness about the problem of climate change and motivates people to reduce their carbon footprint.
+Reward system: GeoGuardian uses a reward system to incentivize users to reduce their carbon footprint. When users manage to reduce their CO2 emissions below a specific target, it will deduct from the grant account to the stake account. Users receive tokens as a reward for reducing their carbon footprint. for contact: 
+<a href="mailto:jhonteajada95@gmail.com">Jhon Tejada</a>, <a href="mailto:oscarriojas@gmail.com">Oscar Riojas</a>, check repo in <a href="https://github.com/jhontejada95/CO2_GeoGuardian">CO2_GeoGuardian</a>
 
 ![](/home/oscar/GitHub/polkadot_hackathon/img/cover.jpg)
-
-## ¿Cómo funciona?
-La solución consiste en crear un dispositivo IoT que mide concentración de CO2 (monoxido de carbono) y este dispositivo se conecta a la red la blockchain, vez que se supere el valor objetivo de menos de 820 ppm (partes por millón) se descontará de la cuenta de grand a la cuenta de stake, la idea es que los implicados tengan un incentivo para mejorar su huella de carbono y la información pueda tener valor para los interesados en medir su impacto ambiental. Este dispositivo en un futuro puede estar en bicicletas y automóviles para incluir la geolocalización y crear mapas de concentración de monóxido de carbono.
-
-
 
 ## Hardware
 El microcontrolador que se utilizó es una ESP32 por su bajo consumo de energía y que tiene incorporado conexión wifi, para medir el nivel de CO2 se utilizó un sensor MQ135 conectado a una de las entradas analógicas.
 
 ![](/home/oscar/GitHub/polkadot_hackathon/img/sensor.jpg)
 
-* ESP32: <https://github.com/FablabTorino/AUG-Torino/wiki/Wemos-Lolin-board-(ESP32-with-128x64-SSD1306-I2C-OLED-display)>
-* MQ135: <https://components101.com/sensors/mq135-gas-sensor-for-air-quality>
+* MICRO ESP32: <https://github.com/FablabTorino/AUG-Torino/wiki/Wemos-Lolin-board-(ESP32-with-128x64-SSD1306-I2C-OLED-display)>
+* CO2 MQ135:   <https://components101.com/sensors/mq135-gas-sensor-for-air-quality>
+* GPS neo-6m:  <https://naylampmechatronics.com/sensores-posicion-inerciales-gps/106-modulo-gps-neo-6m.html>
 
 ## Software
 Todo el backend de la aplicación esta construido en python utilizando la libreria <https://github.com/polkascan/py-substrate-interface> para la conexion a la blockchain, fastAPI para crear los endpoint, el front esta construido con Boodstrap y la red de prueba que se utiliza es Westend
