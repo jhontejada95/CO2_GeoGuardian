@@ -1,5 +1,5 @@
-# CO2-GeoGuardian polkadot_hackathon
-En este repositorio está todo el código para la participación en la hackaton Polkadot, la información del hardware que se diseño las tecnologías y el front el demo los podemos ver en: <http://ec2-54-234-110-184.compute-1.amazonaws.com:8086/>
+# GeoGuardian encodex_hackathon
+In this repository there is all the code for the participation in the Encode X hackathon, the information of the hardware that the technologies were designed and the front the demo can be seen at: <http://ec2-54-234-110-184.compute-1.amazonaws.com:8086/>
 
 ![](/home/oscar/GitHub/polkadot_hackathon/img/logo_hack.png)
 
@@ -14,7 +14,7 @@ Reward system: GeoGuardian uses a reward system to incentivize users to reduce t
 ![](/home/oscar/GitHub/polkadot_hackathon/img/cover.jpg)
 
 ## Hardware
-El microcontrolador que se utilizó es una ESP32 por su bajo consumo de energía y que tiene incorporado conexión wifi, para medir el nivel de CO2 se utilizó un sensor MQ135 conectado a una de las entradas analógicas.
+The microcontroller that was used is an ESP32 due to its low energy consumption and that it has a built-in Wi-Fi connection. To measure the CO2 level, an MQ135 sensor connected to one of the analog inputs was used.
 
 ![](/home/oscar/GitHub/polkadot_hackathon/img/sensor.jpg)
 
@@ -23,13 +23,13 @@ El microcontrolador que se utilizó es una ESP32 por su bajo consumo de energía
 * GPS neo-6m:  <https://naylampmechatronics.com/sensores-posicion-inerciales-gps/106-modulo-gps-neo-6m.html>
 
 ## Software
-Todo el backend de la aplicación esta construido en python utilizando la libreria <https://github.com/polkascan/py-substrate-interface> para la conexion a la blockchain, fastAPI para crear los endpoint, el front esta construido con Boodstrap y la red de prueba que se utiliza es Westend
+The entire backend of the application is built in python using the library <https://github.com/polkascan/py-substrate-interface> for the connection to the blockchain, fastAPI to create the endpoints, the front is built with Bootstrap and the test network used is Mandala de Acala
 
-## Infraestructura
-La aplicación utiliza una instancia de EC2 de la capa gratuita de AWS y una base de datos SQL RDS de AWS también en la capa gratuita.
+## Infrastructure
+The application uses an AWS Free Tier EC2 instance and an AWS SQL RDS database also in the Free Tier.
 
 ## Video demo
-El demo se puede ver en: <https://www.youtube.com/watch?v=cNkNyK1RYA0>
+The demo can be seen at: <https://www.youtube.com/watch?v=cNkNyK1RYA0>
 
 ### Musica de fondo:
-<https://www.youtube.com/watch?v=2lMLPkcBBd0&list=PLtoBum7gx6vG5qc1hTuMMODKEUWlHdDyo&index=24>
+<https://elements.envato.com/the-cosmos-flight-inspiration-CAMY2H4>
