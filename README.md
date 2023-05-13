@@ -1,7 +1,5 @@
 # GeoGuardian encodex_hackathon
-In this repository there is all the code for the participation in the Encode X hackathon, the information of the hardware that the technologies were designed and the front the demo can be seen at: <http://ec2-54-234-110-184.compute-1.amazonaws.com:8086/>
-# GeoGuardian 
-En este repositorio está todo el código para la participación en la hackaton Polkadot, la información del hardware que se diseño las tecnologías y el front el demo los podemos ver en: <http://ec2-184-72-114-228.compute-1.amazonaws.com:8086/>
+In this repository there is all the code for the participation in the Encode X hackathon, the information of the hardware that the technologies were designed and the front the demo can be seen at: <http://ec2-184-72-114-228.compute-1.amazonaws.com:8086/>
 
 ![](img/encode.png)
 
