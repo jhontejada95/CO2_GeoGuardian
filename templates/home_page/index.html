@@ -8,6 +8,7 @@
     <link href="{{ url_for('css', path='/style.css') }}" rel="stylesheet">
 </head>
 <body>
+  
 
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">GeoGuardian</a>
@@ -45,7 +46,7 @@
                 Wallet grant:
               </h4>
                 <p class="text-break">
-                  5GcDVqDQZ5n2qhUmFSP4stJvqXppcmevVW8dVWrXFQUJKXHD
+                  5FswwAfw5CV3nz9M3oiUvxdd6PCF9pHAEyEotSw8hRUVDupA
                 </p>
             </div>
             <div class="container-fluid">
@@ -53,7 +54,7 @@
                 Wallet stake:
               </h4>
                 <p class="text-break">
-                  5D2fBKHgezt6pKKuXFo8Xse3sT9hZK5PtkJEyacozZJnVXZ3
+                  5DnwSBic6fGC7nrxm514cXZ4tWKeqEpFBRK915LJeaGyWXWz
                 </p>
             </div>
 
@@ -62,22 +63,23 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" >
 	    <br>
-            <h4 class="h4">Dashboard</h4>
+        <h4 class="h4">Dashboard</h4>
 
-              <div class="mb-3 border rounded" style='padding: 4px;'>
-                <div id='divPlotly'>
-                  <script>
-                    {{plot | safe}}
-                    Plotly.react('divPlotly', plotly_data.data, plotly_data.layout);
-                  </script>
-                </div>
-              </div>
+          <div class="mb-3 border rounded" style='padding: 16px;'>
+            <div id='divPlotly'>
+              <script>
+                {{plot | safe}}
+                Plotly.react('divPlotly', plotly_data.data, plotly_data.layout);
+              </script>
+            </div>
+          </div>
 
           <div class="mb-3 border rounded" style='padding: 10px;'>
             <div class="container text-start" style='padding: 10px;'>
               <div class="row">
-                <h4 class="h4">¿How it works??</h4>
+                <h4 class="h4">¿Cómo funciona?</h4>
                 <div class="col" style='padding: 4px;'>
+                  <h4 class="h4">¿Cómo funciona?</h4>
                   <p class="text-start">
                     GeoGuardian is a blockchain-based project that uses an IoT device to measure the concentration of carbon monoxide (CO2) and track CO2 emissions in different locations. The solution works in four key steps:
 
@@ -95,7 +97,13 @@
                   </p>
                 </div>
                 <div class="col" style='padding: 0px;'>
-                  <img src="{{ url_for('img', path='/sensor.jpg') }}" class="rounded mx-auto d-block" alt="sensor">
+                  <h4 class="h4">Georeferenciación</h4>
+                  <div id='divPlotly2'>
+                    <script>
+                      {{plot2 | safe}}
+                      Plotly.react('divPlotly2', plotly_data2.data, plotly_data2.layout);
+                    </script>
+                  </div>
                 </div>
               </div>
             </div>
@@ -104,6 +112,8 @@
 
       </div>
     </div>
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

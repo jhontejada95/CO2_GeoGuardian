@@ -34,7 +34,7 @@ class sendTk:
         """
         this function send tokens to blockchain wallet
         :param wallet_to_send: a wallet to send tokens
-        :param amount: amount in WND
+        :param amount: amount in ACA
         :return: transfer: is True if transaction OK, else False
         """
 
@@ -52,7 +52,7 @@ class sendTk:
         )
 
         try:
-            extrinsic = self.substrate.create_signed_extrinsic(call=call, keypair=keypair)
+            extrinsic = self.substrate.create_signed_extrinsic(call=call, keypair=keypair, tip=1000000)
             receipt = self.substrate.submit_extrinsic(extrinsic, wait_for_inclusion=True)
             print(f"🤑 Extrinsic {receipt.extrinsic_hash} sent and included in block {receipt.block_hash}")
             transfer = True
