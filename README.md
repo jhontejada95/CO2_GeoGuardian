@@ -18,7 +18,7 @@ El microcontrolador que se utilizó es una ESP32 por su bajo consumo de energía
 
 ![](img/sensor2.jpg)
 
-* MICRO ESP32: <https://github.com/FablabTorino/AUG-Torino/wiki/Wemos-Lolin-board-(ESP32-with-128x64-SSD1306-I2C-OLED-display)>
+* MICRO ESP8266: <https://electronilab.co/tienda/nodemcu-board-de-desarrollo-con-esp8266-wifi-y-lua/>
 * CO2 MQ135:   <https://components101.com/sensors/mq135-gas-sensor-for-air-quality>
 * GPS neo-6m:  <https://naylampmechatronics.com/sensores-posicion-inerciales-gps/106-modulo-gps-neo-6m.html>
 
@@ -31,7 +31,4 @@ La aplicación utiliza una instancia de EC2 de la capa gratuita de AWS y una bas
 ![](img/CO2_geoguardian.jpg)
 
 ## Video demo
-El demo se puede ver en: <https://www.youtube.com/watch?v=cNkNyK1RYA0>
-
-### Musica de fondo:
-<https://www.youtube.com/watch?v=2lMLPkcBBd0&list=PLtoBum7gx6vG5qc1hTuMMODKEUWlHdDyo&index=24>
+El demo se puede ver en: <https://www.youtube.com/watch?v=rAjoWlaW4j8>
