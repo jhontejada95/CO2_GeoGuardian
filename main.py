@@ -155,7 +155,7 @@ async def data_co_send_tokens(co2: int, origin: str, token: str, lat: float, lon
             with open('data_user.json', "w") as outfile:
                 outfile.write(json_object)
 
-            print("🔥 Whit 10 points send 0.01 ACA")
+            print("🔥 With 10 points send 0.01 ACA")
 
         print(''.center(60, '='))
 
@@ -204,7 +204,7 @@ async def query_co2(rows: int, token: str):
     this function test database
     :param rows: number of rows to query
     :param token: uuid for endpoint
-    :return: json whit rows in rows param
+    :return: json with rows in rows param
     """
     if token == TOKEN:
 
